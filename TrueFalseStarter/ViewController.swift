@@ -33,8 +33,10 @@ class ViewController: UIViewController {
     // Buttons
     
     @IBOutlet weak var questionField: UILabel!
-    @IBOutlet weak var trueButton: UIButton!
-    @IBOutlet weak var falseButton: UIButton!
+    @IBOutlet weak var answer1Button: UIButton!
+    @IBOutlet weak var answer2Button: UIButton!
+    @IBOutlet weak var answer3Button: UIButton!
+    @IBOutlet weak var answer4Button: UIButton!
     @IBOutlet weak var playAgainButton: UIButton!
     
 
@@ -58,14 +60,22 @@ class ViewController: UIViewController {
         let questionDictionary = Questions().question[indexOfSelectedQuestion] // pull out that random fact using the random number
         questionField.text = questionDictionary.question // Display the pulled out fact in label
         playAgainButton.isHidden = true // hide the play again button
+        // Need to update 4 answer buttons with answers
+        answer1Button.setTitle(questionDictionary.answer1, for: .normal)
+        answer2Button.setTitle(questionDictionary.answer2, for: .normal)
+        answer3Button.setTitle(questionDictionary.answer3, for: .normal)
+        answer4Button.setTitle(questionDictionary.answer4, for: .normal)
     }
     
     // This func seems to be showing score and hiding other buttons, modify func and move into own file
     
     func displayScore() {
-        // Hide the answer buttons
-        trueButton.isHidden = true
-        falseButton.isHidden = true
+        // Hide the four answer buttons while display score
+        answer1Button.isHidden = true
+        answer2Button.isHidden = true
+        answer3Button.isHidden = true
+        answer4Button.isHidden = true
+        
         
         // Display play again button
         playAgainButton.isHidden = false
@@ -78,10 +88,10 @@ class ViewController: UIViewController {
         // Increment the questions asked counter
         questionsAsked += 1
         
-        let selectedQuestionDict = trivia[indexOfSelectedQuestion]
-        let correctAnswer = selectedQuestionDict["Answer"]
+        let selectedQuestionDict = Questions().question[indexOfSelectedQuestion]
+        let correctAnswer = selectedQuestionDict.realAnswer
         
-        if (sender === trueButton &&  correctAnswer == "True") || (sender === falseButton && correctAnswer == "False") {
+        if (sender === answer1Button && correctAnswer == "answer1") || (sender === answer2Button && correctAnswer == "answer2") || (sender === answer3Button && correctAnswer == "answer3") || (sender === answer4Button && correctAnswer == "answer4") {
             correctQuestions += 1
             questionField.text = "Correct!"
         } else {
@@ -103,8 +113,8 @@ class ViewController: UIViewController {
     
     @IBAction func playAgain() {
         // Show the answer buttons
-        trueButton.isHidden = false
-        falseButton.isHidden = false
+        answer1Button.isHidden = false
+        answer2Button.isHidden = false
         
         questionsAsked = 0
         correctQuestions = 0

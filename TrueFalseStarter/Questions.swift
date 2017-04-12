@@ -33,11 +33,11 @@ struct Questions {
             realAnswer: "answer2"),
          QuestionTemplate(
             question: "Which country is Picard from?",
-            answer1: "France",
+            answer1: "Not from earth",
             answer2: "USA",
             answer3: "United Kinddom",
-            answer4: "Not from earth",
-            realAnswer: "answer1")
+            answer4: "France",
+            realAnswer: "answer4")
     ]
 }
 
