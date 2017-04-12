@@ -12,12 +12,16 @@ import AudioToolbox
 
 class ViewController: UIViewController {
     
-    let questionsPerRound = 4
-    var questionsAsked = 0
-    var correctQuestions = 0
-    var indexOfSelectedQuestion: Int = 0
+    //NOTE: Set veribles - might moves these to own file with related code
     
-    var gameSound: SystemSoundID = 0
+    let questionsPerRound = 4 // How many questions to ask
+    var questionsAsked = 0 // Counter keeping track how many questions asked
+    var correctQuestions = 0 // Counter keeping track of score
+    var indexOfSelectedQuestion: Int = 0 // This is just a default value that gets replaced with a random key from array.
+    
+    var gameSound: SystemSoundID = 0 // ?
+    
+    //NOTE: Current data container, to move to own file
     
     let trivia: [[String : String]] = [
         ["Question": "Only female koalas can whistle", "Answer": "False"],
@@ -25,6 +29,8 @@ class ViewController: UIViewController {
         ["Question": "Camels are cannibalistic", "Answer": "False"],
         ["Question": "All ducks are birds", "Answer": "True"]
     ]
+    
+    // Buttons
     
     @IBOutlet weak var questionField: UILabel!
     @IBOutlet weak var trueButton: UIButton!
@@ -34,10 +40,10 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadGameStartSound()
+        loadGameStartSound() //Loading sound
         // Start game
-        playGameStartSound()
-        displayQuestion()
+        playGameStartSound() // Playing sound, wonder if can have loasd and play into one class pulled from another file.
+        displayQuestion() // to me this is start of game and sets first question in motion
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,12 +51,16 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // Showing question on screen
+    
     func displayQuestion() {
-        indexOfSelectedQuestion = GKRandomSource.sharedRandom().nextInt(upperBound: trivia.count)
-        let questionDictionary = trivia[indexOfSelectedQuestion]
-        questionField.text = questionDictionary["Question"]
-        playAgainButton.isHidden = true
+        indexOfSelectedQuestion = GKRandomSource.sharedRandom().nextInt(upperBound: Questions().question.count) // get random number from array
+        let questionDictionary = Questions().question[indexOfSelectedQuestion] // pull out that random fact using the random number
+        questionField.text = questionDictionary.question // Display the pulled out fact in label
+        playAgainButton.isHidden = true // hide the play again button
     }
+    
+    // This func seems to be showing score and hiding other buttons, modify func and move into own file
     
     func displayScore() {
         // Hide the answer buttons
