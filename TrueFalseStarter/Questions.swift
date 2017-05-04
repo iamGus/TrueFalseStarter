@@ -6,6 +6,8 @@
 //  Copyright © 2017 Treehouse. All rights reserved.
 //
 
+import Foundation
+
 struct QuestionTemplate {
     var question: String
     var answer1: String
@@ -15,7 +17,7 @@ struct QuestionTemplate {
     var realAnswer: String
 }
 
-struct Questions {
+class Questions {
     var question: [QuestionTemplate] =
         [QuestionTemplate(
             question: "What is Picard's faviout drink?",
@@ -39,5 +41,18 @@ struct Questions {
             answer4: "France",
             realAnswer: "answer4")
     ]
+    
+    
+    func randomQuestionGenerator(max: Int) -> () -> Int {
+        var questionsLeft = [Int]() // Questions available to use counter
+        return {
+            if questionsLeft.count == 0 {
+                questionsLeft = Array(0 ... max) // Reset questionsLeft counter back to amount of questions
+            }
+            
+            let index = Int(arc4random_uniform(UInt32(questionsLeft.count)))
+            return questionsLeft.remove(at: index)
+        }
+    }
 }
 

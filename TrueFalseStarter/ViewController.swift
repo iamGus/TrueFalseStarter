@@ -14,22 +14,13 @@ class ViewController: UIViewController {
     
     //NOTE: Set veribles - might moves these to own file with related code
     
-    let questionsPerRound = 4 // How many questions to ask
+    let questionsPerRound = 3 // How many questions to ask
     var questionsAsked = 0 // Counter keeping track how many questions asked
     var correctQuestions = 0 // Counter keeping track of score
     var indexOfSelectedQuestion: Int = 0 // This is just a default value that gets replaced with a random key from array.
-    
+    let getRandomNumber = Questions().randomQuestionGenerator(max: 2)
     var gameSound: SystemSoundID = 0 // ?
-    
-    //NOTE: Current data container, to move to own file
-    
-    let trivia: [[String : String]] = [
-        ["Question": "Only female koalas can whistle", "Answer": "False"],
-        ["Question": "Blue whales are technically whales", "Answer": "True"],
-        ["Question": "Camels are cannibalistic", "Answer": "False"],
-        ["Question": "All ducks are birds", "Answer": "True"]
-    ]
-    
+        
     // Buttons
     
     @IBOutlet weak var questionField: UILabel!
@@ -45,6 +36,7 @@ class ViewController: UIViewController {
         loadGameStartSound() //Loading sound
         // Start game
         playGameStartSound() // Playing sound, wonder if can have loasd and play into one class pulled from another file.
+        
         displayQuestion() // to me this is start of game and sets first question in motion
     }
 
@@ -55,8 +47,12 @@ class ViewController: UIViewController {
     
     // Showing question on screen
     
+    
     func displayQuestion() {
-        indexOfSelectedQuestion = GKRandomSource.sharedRandom().nextInt(upperBound: Questions().question.count) // get random number from array
+        
+        
+        indexOfSelectedQuestion = getRandomNumber() // get random number from array
+        
         let questionDictionary = Questions().question[indexOfSelectedQuestion] // pull out that random fact using the random number
         questionField.text = questionDictionary.question // Display the pulled out fact in label
         playAgainButton.isHidden = true // hide the play again button
@@ -84,6 +80,7 @@ class ViewController: UIViewController {
         
     }
     
+    //When one of answer buttons clicked do the below
     @IBAction func checkAnswer(_ sender: UIButton) {
         // Increment the questions asked counter
         questionsAsked += 1
@@ -91,6 +88,7 @@ class ViewController: UIViewController {
         let selectedQuestionDict = Questions().question[indexOfSelectedQuestion]
         let correctAnswer = selectedQuestionDict.realAnswer
         
+        //logic for if button was pressed was the correct answer
         if (sender === answer1Button && correctAnswer == "answer1") || (sender === answer2Button && correctAnswer == "answer2") || (sender === answer3Button && correctAnswer == "answer3") || (sender === answer4Button && correctAnswer == "answer4") {
             correctQuestions += 1
             questionField.text = "Correct!"
@@ -101,6 +99,7 @@ class ViewController: UIViewController {
         loadNextRoundWithDelay(seconds: 2)
     }
     
+    // checks if game is srill ongoing comparing how many questions asked copared to round counter
     func nextRound() {
         if questionsAsked == questionsPerRound {
             // Game is over
@@ -111,11 +110,15 @@ class ViewController: UIViewController {
         }
     }
     
+    // when the play again button is shown
     @IBAction func playAgain() {
         // Show the answer buttons
         answer1Button.isHidden = false
         answer2Button.isHidden = false
+        answer3Button.isHidden = false
+        answer4Button.isHidden = false
         
+        // reset question counters
         questionsAsked = 0
         correctQuestions = 0
         nextRound()
@@ -124,6 +127,8 @@ class ViewController: UIViewController {
 
     
     // MARK: Helper Methods
+    
+    // Delay function, move to own file
     
     func loadNextRoundWithDelay(seconds: Int) {
         // Converts a delay in seconds to nanoseconds as signed 64 bit integer
@@ -136,6 +141,8 @@ class ViewController: UIViewController {
             self.nextRound()
         }
     }
+    
+    // game sound files, move to own file and lok into adding more sounds
     
     func loadGameStartSound() {
         let pathToSoundFile = Bundle.main.path(forResource: "GameSound", ofType: "wav")
