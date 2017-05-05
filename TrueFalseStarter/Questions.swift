@@ -96,11 +96,11 @@ class Questions {
     ]
     
     // Function to return random question index number
-    func randomQuestionGenerator() -> () -> Int {
+    func randomQuestionGenerator(reset: Bool) -> () -> Int {
         var questionsLeft = [Int]() // Counter to store number of questions and remove to stop duplicate
         let maxRange = self.question.count - 1 // get max possible questions
         return {
-            if questionsLeft.count == 0 {
+            if questionsLeft.count == 0 || reset == true {
                 questionsLeft = Array(0 ... maxRange) // Reset questionsLeft counter back to amount of questions
             }
             

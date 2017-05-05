@@ -5,6 +5,8 @@
 //  Created by Pasan Premaratne on 3/9/16.
 //  Modified and enhanced by Angus Muller on 4/5/17
 //  Copyright © 2017 Angus Muller. All rights reserved.
+//  This app is not endorsed, sponsored or affiliated with CBS Studios Inc. or the Star Trek franchise.
+//  All STAR TREK trademarks, images and sounds are owned by CBS Studios Inc.
 //
 
 import UIKit
@@ -13,11 +15,12 @@ class ViewController: UIViewController {
     
     //Properties parameters and defaults set
     
-    let questionsPerRound = 10 // How many questions in a round to ask
+    let questionsPerRound = 5 // How many questions in a round to ask
+    let questionsToGetCorrect = 4 // If x or more question correct show positive Picard at end of game
     var questionsAsked = 0 // Counter keeping track how many questions asked
     var correctQuestions = 0 // Counter keeping track of score
     var indexOfSelectedQuestion: Int = 0 // This is just a default value that gets replaced with a random key from array.
-    let getRandomNumber = Questions().randomQuestionGenerator() // Instance set for generating random question
+    var getRandomNumber = Questions().randomQuestionGenerator(reset: false) // Instance set for generating random question
   
         
     // Buttons
@@ -92,10 +95,10 @@ class ViewController: UIViewController {
         // Display play again button
         playAgainButton.isHidden = false
         
-        if correctQuestions >= 8 { // If 8 or more question correct show positive Picard
+        if correctQuestions >= questionsToGetCorrect { // If x or more question correct show positive Picard
           questionField.text = "Make it so!\nYou got \(correctQuestions) out of \(questionsPerRound) correct!"
               picardWin.isHidden = false
-        } else { // else if score is less than 3 correct answers then show sad Picard
+        } else { // else if score is less than x of questionToGetCorrect then show sad Picard
         questionField.text = "Oh dear!\nYou got \(correctQuestions) out of \(questionsPerRound) correct!"
             picardLose.isHidden = false
         }
@@ -168,6 +171,8 @@ class ViewController: UIViewController {
         // Reset question counters
         questionsAsked = 0
         correctQuestions = 0
+        getRandomNumber = Questions().randomQuestionGenerator(reset: true) // reset random counter back to max questions
+        getRandomNumber = Questions().randomQuestionGenerator(reset: false) // Turn reset off
         nextRound()
     }
     
